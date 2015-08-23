@@ -1,6 +1,6 @@
 'use strict';
 var expect = require("chai").expect;
-var check = require('../main');
+var check = require('../check');
 describe('matching', () => {
     it('should match template', () => {
         const template = { key: 'val'};
