@@ -1,6 +1,6 @@
 'use strict';
 var expect = require("chai").expect;
-
+var check = require('../main');
 describe('matching', () => {
     it('should match template', () => {
         const template = { key: 'val'};
@@ -79,7 +79,7 @@ describe('matching', () => {
 });
 
 describe('reporting', () => {
-    it('should tell about missing field', () => {
+    it('should report missing field', () => {
         const template = { key: 'val', lol: 'bal' };
         const json = { key: 'val' };
 
@@ -88,34 +88,31 @@ describe('reporting', () => {
         expect(result.match).to.equal(false);
         expect(result.message).to.equal('missing key lol');
     });
+    it('should report wrong data type(number)', () => {
+        const template = { key: 1 };
+        const json = { key: 'val' };
+
+        const result = check(template, json);
+
+        expect(result.match).to.equal(false);
+        expect(result.message).to.equal('key key is not a number');
+    });
+     it('should report wrong data type(array)', () => {
+         const template = { key: [] };
+         const json = { key: 'val' };
+
+         const result = check(template, json);
+
+         expect(result.match).to.equal(false);
+         expect(result.message).to.equal('key key is not an array');
+    });
+    it('should not report anything when ok', () => {
+        const template = { key: 1 };
+        const json = { key: 2 };
+
+        const result = check(template, json);
+
+        expect(result.match).to.equal(true);
+        expect(result.message).to.equal('');
+    });
 });
-
-const check = function check(template, json) {
-    const isNumber = function isNumber(param) {
-        return !isNaN(param);
-    };
-    const createResult = function createResult(result, message) {
-        return { match: result, message: message };
-    };
-    let result = true;
-    for (var prop in template) {
-        if (template.hasOwnProperty(prop)) {
-            if (!json.hasOwnProperty(prop)) {
-                return createResult(false, `missing key ${prop}`);
-            }
-            let templateProperty = template[prop];
-            let jsonProperty = json[prop];
-            if (isNumber(templateProperty)) {
-                return createResult(isNumber(jsonProperty));
-            }
-            if (Array.isArray(templateProperty)) {
-                return createResult(Array.isArray(jsonProperty));
-            }
-            if (typeof templateProperty === 'object') {
-                return check(templateProperty, jsonProperty);
-            }
-        }
-    }
-
-    return { match: result };
-};
