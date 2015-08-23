@@ -1,0 +1,17 @@
+{
+  "name": "checker",
+  "version": "0.0.1",
+  "description": "",
+  "main": "main.js",
+  "dependencies": {
+    "chai": "^3.2.0",
+    "mocha": "^2.2.5"
+  },
+  "devDependencies": {},
+  "scripts": {
+      "test": "./node_modules/.bin/mocha --reporter spec --harmony_arrow_functions",
+      "start": "./node_modules/.bin/mocha --reporter spec --harmony_arrow_functions --watch"
+  },
+  "author": "Simo Råman",
+  "license": "MIT"
+}
