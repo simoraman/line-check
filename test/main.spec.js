@@ -97,14 +97,23 @@ describe('reporting', () => {
         expect(result.match).to.equal(false);
         expect(result.message).to.equal('key key is not a number');
     });
-     it('should report wrong data type(array)', () => {
-         const template = { key: [] };
-         const json = { key: 'val' };
+    it('should report wrong data type(array)', () => {
+        const template = { key: [] };
+        const json = { key: 'val' };
 
-         const result = check(template, json);
+        const result = check(template, json);
 
-         expect(result.match).to.equal(false);
-         expect(result.message).to.equal('key key is not an array');
+        expect(result.match).to.equal(false);
+        expect(result.message).to.equal('key key is not an array');
+    });
+    it('should report wrong data type(object)', () => {
+        const template = { key: { foo: 'bar'} };
+        const json = { key: 'val' };
+
+        const result = check(template, json);
+
+        expect(result.match).to.equal(false);
+        expect(result.message).to.equal('missing key foo');
     });
     it('should not report anything when ok', () => {
         const template = { key: 1 };
