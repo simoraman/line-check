@@ -125,3 +125,18 @@ describe('reporting', () => {
         expect(result.message).to.equal('');
     });
 });
+
+const run = function run(fileName, json) {
+    const fs = require('fs');
+    const template = fs.readFileSync(fileName, 'utf8');
+    return check(JSON.parse(template), json);
+};
+describe('Runner', () => {
+    it('should load template from file', () => {
+        const json = { key: 2 };
+
+        const result = run('./test/test-template.json', json);
+
+        expect(result.match).to.equal(true);
+    });
+});
