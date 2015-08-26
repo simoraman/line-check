@@ -7,10 +7,13 @@
     "chai": "^3.2.0",
     "mocha": "^2.2.5"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "nock": "^2.10.0",
+    "request": "^2.61.0"
+  },
   "scripts": {
-      "test": "./node_modules/.bin/mocha --reporter spec --harmony_arrow_functions",
-      "start": "./node_modules/.bin/mocha --reporter spec --harmony_arrow_functions --watch"
+    "test": "./node_modules/.bin/mocha --reporter spec --harmony_arrow_functions",
+    "start": "./node_modules/.bin/mocha --reporter spec --harmony_arrow_functions --watch"
   },
   "author": "Simo Råman",
   "license": "MIT"

@@ -126,17 +126,36 @@ describe('reporting', () => {
     });
 });
 
-const run = function run(fileName, json) {
+const run = function run(fileName, url, cb) {
     const fs = require('fs');
+    const request = require('request');
+
     const template = fs.readFileSync(fileName, 'utf8');
-    return check(JSON.parse(template), json);
+
+    request(url, (_, response, body) => {
+        console.log(_);
+        cb(check(JSON.parse(template), JSON.parse(body)));
+    });
+
 };
+
+
 describe('Runner', () => {
-    it('should load template from file', () => {
-        const json = { key: 2 };
+    var nock = require('nock');
 
-        const result = run('./test/test-template.json', json);
+    before( () => {
+        const server = nock('http://localhost:9090')
+                  .get('/test-template.json')
+                  .reply('200', { "key": 1 });
+    });
 
-        expect(result.match).to.equal(true);
+    it('should get json from endpoint and template from file', (done) => {
+        const result = run('./test/test-template.json',
+                           'http://localhost:9090/test-template.json',
+                           function(result) {
+                               expect(result.match).to.equal(true);
+                               done();
+                           });
+
     });
 });
