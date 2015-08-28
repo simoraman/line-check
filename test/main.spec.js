@@ -1,6 +1,8 @@
 'use strict';
 var expect = require("chai").expect;
 var check = require('../check');
+var run = require('../run');
+
 describe('matching', () => {
     it('should match template', () => {
         const template = { key: 'val'};
@@ -126,20 +128,6 @@ describe('reporting', () => {
     });
 });
 
-const run = function run(fileName, url, cb) {
-    const fs = require('fs');
-    const request = require('request');
-
-    const template = fs.readFileSync(fileName, 'utf8');
-
-    request(url, (_, response, body) => {
-        console.log(_);
-        cb(check(JSON.parse(template), JSON.parse(body)));
-    });
-
-};
-
-
 describe('Runner', () => {
     var nock = require('nock');
 
@@ -156,6 +144,5 @@ describe('Runner', () => {
                                expect(result.match).to.equal(true);
                                done();
                            });
-
     });
 });
