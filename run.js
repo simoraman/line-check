@@ -1,15 +1,16 @@
 'use strict';
 
-var check = require('./check');
+const request = require('request-promise');
+const check = require('./check');
+const Promise = require("bluebird");
+const fs = require('fs');
+Promise.promisifyAll(fs);
 
 const run = function run(fileName, url, cb) {
-    const fs = require('fs');
-    const request = require('request');
-
-    const template = fs.readFileSync(fileName, 'utf8');
-
-    request(url, (_, response, body) => {
-        cb(check(JSON.parse(template), JSON.parse(body)));
+    const readFile = fs.readFileAsync(fileName, 'utf8');
+    const makeRequest = request(url);
+    Promise.join(readFile, makeRequest, (file, body) => {
+        cb(check(JSON.parse(file), JSON.parse(body)));
     });
 };
 
