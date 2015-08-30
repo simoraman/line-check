@@ -1,7 +1,8 @@
 'use strict';
-var expect = require("chai").expect;
-var check = require('../check');
-var run = require('../run');
+const expect = require("chai").expect;
+const check = require('../check');
+const run = require('../run');
+const Promise = require('bluebird');
 
 describe('matching', () => {
     it('should match template', () => {
@@ -131,19 +132,37 @@ describe('reporting', () => {
 describe('Runner', () => {
     var nock = require('nock');
 
-    before( () => {
+    beforeEach( () => {
         const server = nock('http://localhost:9090')
                   .get('/test-template.json')
-                  .reply('200', { "key": 1 });
+                  .reply('200', { "key": 1 })
+                  .get('/test-template2.json')
+                  .reply('200', { "wrong-key": 1 });
     });
 
     it('should get json from endpoint and template from file', (done) => {
         const options = [{ templatePath: './test/test-template.json',
                          url: 'http://localhost:9090/test-template.json'}];
-        const result = run(options,
+        const result = run(options)[0].then(
                            function(result) {
                                expect(result.match).to.equal(true);
                                done();
                            });
+    });
+
+    it('should return array of results', (done) => {
+        const options = [{ templatePath: './test/test-template.json',
+                           url: 'http://localhost:9090/test-template.json'}];
+
+        options.push({ templatePath: './test/test-template.json',
+                       url: 'http://localhost:9090/test-template2.json'});
+
+        const result = run(options);
+
+        Promise.all(result).then( (r) => {
+            expect(r[0].match).to.equal(true);
+            expect(r[1].match).to.equal(false);
+            done();
+        });
     });
 });
