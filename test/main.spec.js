@@ -138,8 +138,9 @@ describe('Runner', () => {
     });
 
     it('should get json from endpoint and template from file', (done) => {
-        const result = run('./test/test-template.json',
-                           'http://localhost:9090/test-template.json',
+        const options = [{ templatePath: './test/test-template.json',
+                         url: 'http://localhost:9090/test-template.json'}];
+        const result = run(options,
                            function(result) {
                                expect(result.match).to.equal(true);
                                done();

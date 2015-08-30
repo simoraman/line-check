@@ -6,9 +6,9 @@ const Promise = require("bluebird");
 const fs = require('fs');
 Promise.promisifyAll(fs);
 
-const run = function run(fileName, url, cb) {
-    const readFile = fs.readFileAsync(fileName, 'utf8');
-    const makeRequest = request(url);
+const run = function run(opts, cb) {
+    const readFile = fs.readFileAsync(opts[0].templatePath, 'utf8');
+    const makeRequest = request(opts[0].url);
     Promise.join(readFile, makeRequest, (file, body) => {
         cb(check(JSON.parse(file), JSON.parse(body)));
     });
