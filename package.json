@@ -1,8 +1,8 @@
 {
   "name": "line-check",
   "version": "0.0.1",
-  "description": "",
-  "main": "main.js",
+  "description": "Library for checking front end fixture date is up to date with actual back end data",
+  "main": "run.js",
   "dependencies": {
     "bluebird": "^2.9.34",
     "request-promise": "^0.4.3"
@@ -16,6 +16,10 @@
   "scripts": {
     "test": "./node_modules/.bin/mocha --reporter spec --harmony_arrow_functions",
     "start": "./node_modules/.bin/mocha --reporter spec --harmony_arrow_functions --watch"
+  },
+  "repository" : {
+    "type" : "git",
+    "url" : "https://github.com/simoraman/line-check"
   },
   "author": "Simo Råman",
   "license": "MIT"
