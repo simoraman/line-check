@@ -12,6 +12,8 @@ npm install line-check
 
 ## Usage
 ```javascript
+    const lineCheck = require('line-check');
+    const Promise = require('bluebird');
     const options = [{ templatePath: './test/test-template.json',
                        url: 'http://localhost:9090/test-template.json'}];
 
