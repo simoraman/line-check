@@ -1,6 +1,6 @@
 {
   "name": "line-check",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Library for checking front end fixture data is up to date with actual back end data",
   "main": "run.js",
   "dependencies": {
