@@ -16,4 +16,4 @@ const run = function run(opts, cb) {
     });
 };
 
-module.exports = run;
+module.exports = { run: run};
