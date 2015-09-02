@@ -6,7 +6,7 @@ const Promise = require('bluebird');
 const fs = require('fs');
 Promise.promisifyAll(fs);
 
-const run = function run(opts, cb) {
+const run = function run(opts) {
     return opts.map( (testCase) => {
         const readFile = fs.readFileAsync(testCase.templatePath, 'utf8');
         const makeRequest = request(testCase.url);
