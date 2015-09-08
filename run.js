@@ -8,12 +8,19 @@ Promise.promisifyAll(fs);
 
 const run = function run(opts) {
     return opts.map( (testCase) => {
-        const readFile = fs.readFileAsync(testCase.templatePath, 'utf8');
+        let templateP;
+        if (testCase.templatePath) {
+            templateP = fs
+                .readFileAsync(testCase.templatePath, 'utf8')
+                .then(file => { return JSON.parse(file); });
+        } else {
+            templateP = Promise.resolve(testCase.template);
+        }
         const makeRequest = request(testCase.url);
-        return Promise.join(readFile, makeRequest, (file, body) => {
-            return check(JSON.parse(file), JSON.parse(body));
+        return Promise.join(templateP, makeRequest, (template, body) => {
+            return check(template, JSON.parse(body));
         });
     });
 };
 
-module.exports = { run: run};
+module.exports = { run: run };

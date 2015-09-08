@@ -140,8 +140,18 @@ describe('Runner', () => {
                   .reply('200', { "wrong-key": 1 });
     });
 
-    it('should get json from endpoint and template from file', (done) => {
+    it('can get json from endpoint and template from file', (done) => {
         const options = [{ templatePath: './test/test-template.json',
+                         url: 'http://localhost:9090/test-template.json'}];
+        const result = lineCheck.run(options)[0].then(
+                           function(result) {
+                               expect(result.match).to.equal(true);
+                               done();
+                           });
+    });
+
+    it('can get template as javascript object', (done) => {
+        const options = [{ template: { key: 2 },
                          url: 'http://localhost:9090/test-template.json'}];
         const result = lineCheck.run(options)[0].then(
                            function(result) {
