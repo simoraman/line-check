@@ -4,6 +4,7 @@ const check = function check(template, json) {
     const isNumber = function isNumber(param) {
         return !isNaN(param);
     };
+
     const createResult = function createResult(result, message) {
         return { match: result, message: result ? '' : message };
     };
